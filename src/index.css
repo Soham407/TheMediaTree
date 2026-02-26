@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--bg-dark);
+  --color-foreground: #ffffff;
+}
+
+:root {
+  --bg-dark: #000000;
+}

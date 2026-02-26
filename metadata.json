@@ -1,0 +1,5 @@
+{
+  "name": "The Media Tree",
+  "description": "A React and GSAP recreation of The Media Tree landing page, built with Tailwind CSS.",
+  "requestFramePermissions": []
+}
