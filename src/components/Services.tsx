@@ -13,15 +13,19 @@ export default function Services() {
   useGSAP(() => {
     if (!container.current || !rightCol.current || !leftCol.current) return;
 
-    ScrollTrigger.create({
-      trigger: container.current,
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: window.innerWidth >= 768 ? rightCol.current : false,
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      ScrollTrigger.create({
+        trigger: container.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: rightCol.current,
+      });
     });
 
-    const steps = gsap.utils.toArray('.service-step');
-    steps.forEach((step: any, i) => {
+    const steps = gsap.utils.toArray<HTMLElement>('.service-step');
+    steps.forEach((step, i) => {
       gsap.from(step, {
         scrollTrigger: {
           trigger: step,

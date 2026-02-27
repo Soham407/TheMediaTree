@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import { Menu, X } from 'lucide-react';
 
-export default function Header() {
+const Header = forwardRef<HTMLElement, {}>(function Header(props, ref) {
   const [activeSection, setActiveSection] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,29 +33,30 @@ export default function Header() {
 
   // GSAP-aware Scroll Listener for Active Section
   useEffect(() => {
-    // When using GSAP ScrollTrigger pinning, IntersectionObserver can fail
-    // because elements don't strictly "intersect" the viewport in a standard way.
-    // Instead, we calculate active section based on scroll position.
+    let ticking = false;
     const handleScrollTracking = () => {
-      const sections = document.querySelectorAll('section[id]');
-      let currentSection = '';
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const sections = document.querySelectorAll('section[id]');
+          let currentSection = '';
 
-      sections.forEach((section) => {
-        const sectionTop = section.getBoundingClientRect().top;
-        // If the top of the section is anywhere from slightly above the viewport
-        // down to exactly 30% of the viewport height, mark it as active.
-        if (sectionTop <= window.innerHeight * 0.3) {
-          currentSection = section.id;
-        }
-      });
+          sections.forEach((section) => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop <= window.innerHeight * 0.3) {
+              currentSection = section.id;
+            }
+          });
 
-      if (currentSection && currentSection !== activeSection) {
-        setActiveSection(currentSection);
+          if (currentSection && currentSection !== activeSection) {
+            setActiveSection(currentSection);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScrollTracking);
-    // Call once to set initial state
+    window.addEventListener('scroll', handleScrollTracking, { passive: true });
     handleScrollTracking();
 
     return () => window.removeEventListener('scroll', handleScrollTracking);
@@ -72,6 +73,7 @@ export default function Header() {
   return (
     <>
       <header 
+        ref={ref}
         id="main-header" 
         className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center transition-all duration-300 text-white ${
           isScrolled ? 'bg-black/90 backdrop-blur-sm p-4 shadow-lg' : 'bg-transparent p-6'
@@ -151,4 +153,6 @@ export default function Header() {
       </div>
     </>
   );
-}
+});
+
+export default Header;

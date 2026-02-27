@@ -147,7 +147,7 @@ export default function FAQ() {
               ref={el => faqItemsRef.current[i] = el}
               className="group list-none rounded-3xl overflow-hidden transition-all duration-500 cursor-pointer border border-zinc-800 bg-zinc-950 open:bg-yellow-400 open:border-yellow-400 shadow-lg open:shadow-xl hover:border-zinc-600"
             >
-              <summary className="p-6 md:p-8 flex justify-between items-center cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400 focus-visible:ring-inset rounded-3xl group-open:rounded-b-none transition-colors">
+              <summary className="p-6 md:p-8 flex justify-between items-center cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400 group-open:focus-visible:ring-black focus-visible:ring-inset rounded-3xl group-open:rounded-b-none transition-colors">
                 <h3 className="text-lg md:text-xl font-bold pr-10 leading-tight text-white group-open:text-black transition-colors duration-300">
                   {faq.q}
                 </h3>

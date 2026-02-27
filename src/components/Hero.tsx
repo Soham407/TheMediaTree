@@ -3,7 +3,11 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import EnergyBeam from "./ui/energy-beam";
 
-export default function Hero() {
+interface HeroProps {
+  headerRef?: React.RefObject<HTMLElement | null>;
+}
+
+export default function Hero({ headerRef }: HeroProps) {
   const container = useRef<HTMLDivElement>(null);
   const textMask = useRef<SVGTextElement>(null);
   const [fontSize, setFontSize] = useState(120);
@@ -25,10 +29,7 @@ export default function Hero() {
     () => {
       if (!container.current || !textMask.current) return;
 
-      // Header lives outside this component's scope, so we must
-      // grab it by direct DOM reference (scoped selectors won't reach it)
-      const header = document.querySelector("#main-header");
-      if (header) gsap.set(header, { autoAlpha: 0 });
+      // Removed header hiding from here as it shouldn't gate navigation
 
       // Reset initial states
       gsap.set(".energy-beam-container", { autoAlpha: 0 });
@@ -47,27 +48,25 @@ export default function Hero() {
           .to(".hero-masked", { clipPath: "none", duration: 0.01 }, "+=0.1")
           .fromTo(".hero-content", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 }, "<")
           .from(".hero-word", { opacity: 0, duration: 1, stagger: 0.1 }, "<")
-          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, "+=0.2")
-          .to(header, { autoAlpha: 1, duration: 1 }, "<");
+          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, "+=0.2");
       });
 
       // 2. Default Motion: Time-based scale on load (no scroll-cutscene friction)
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
-        // 1-second delay so users can read the mask text before it zooms
+        // 0.2-second delay so users can read the mask text before it zooms
         tl.fromTo(
             textMask.current,
             { scale: 1, transformOrigin: "50% 50%" },
-            { scale: 80, transformOrigin: "50% 50%", duration: 1.8, force3D: true, delay: 1 }
+            { scale: 80, transformOrigin: "50% 50%", duration: 1.8, force3D: true, delay: 0.2 }
           )
-          .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 0.4, ease: "power1.in" }, 1.8)
-          .to(".energy-beam-container", { autoAlpha: 1, duration: 0.6 }, 1.9)
-          .fromTo(".hero-content", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1 }, 2.2)
-          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, 2.8)
-          .from(".hero-word", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }, 2.3)
-          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, 3)
-          .to(header, { autoAlpha: 1, duration: 0.5, ease: "power1.out" }, 3);
+          .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 0.4, ease: "power1.in" }, 1.0)
+          .to(".energy-beam-container", { autoAlpha: 1, duration: 0.6 }, 1.1)
+          .fromTo(".hero-content", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 1 }, 1.4)
+          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, 2.0)
+          .from(".hero-word", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }, 1.5)
+          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, 2.2);
 
         // Pulse animation for decorative circles
         gsap.to(".pulse-circle-1", {

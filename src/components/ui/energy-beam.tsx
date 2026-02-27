@@ -20,8 +20,16 @@ const EnergyBeam: React.FC<EnergyBeamProps> = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
         const loadScript = () => {
             if (scriptLoadedRef.current) return;
+
+            timeoutId = setTimeout(() => {
+                if (isLoading) {
+                    setIsLoading(false);
+                }
+            }, 5000);
 
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.5.2/dist/unicornStudio.umd.js';
@@ -47,6 +55,7 @@ const EnergyBeam: React.FC<EnergyBeamProps> = ({
             document.head.appendChild(script);
 
             return () => {
+                clearTimeout(timeoutId);
                 if (script.parentNode) {
                     script.parentNode.removeChild(script);
                 }
@@ -62,6 +71,9 @@ const EnergyBeam: React.FC<EnergyBeamProps> = ({
                 <div className="absolute inset-0 flex items-center justify-center bg-zinc-950 z-10">
                     <div className="w-8 h-8 border-4 border-zinc-800 border-t-yellow-400 rounded-full animate-spin" aria-label="Loading animation"></div>
                 </div>
+            )}
+            {!isLoading && !window.UnicornStudio && (
+                <div className="absolute inset-0 bg-linear-to-br from-zinc-900 via-black to-zinc-950 pointer-events-none" />
             )}
             <div
                 ref={containerRef}
