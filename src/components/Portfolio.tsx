@@ -30,13 +30,13 @@ export default function Portfolio() {
   ];
 
   return (
-    <section ref={container} className="py-24 bg-zinc-900 text-white px-4">
+    <section id="work" ref={container} className="py-24 bg-zinc-900 text-white px-4">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold mb-12">Our Work</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {works.map((work, i) => (
             <div key={i} className="portfolio-card cursor-pointer group">
-              <div className="overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
+              <div className="overflow-hidden rounded-2xl mb-6 aspect-4/3">
                 <img 
                   src={work.img} 
                   alt={work.name} 

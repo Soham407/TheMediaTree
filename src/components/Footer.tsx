@@ -11,11 +11,13 @@ export default function Footer() {
           </p>
         </div>
         <div>
-          <h3 className="font-bold mb-4">Links</h3>
+          <h3 className="font-bold mb-4">Navigation</h3>
           <ul className="space-y-2 text-zinc-400">
-            <li><a href="#" className="hover:text-yellow-400 transition-colors">Work</a></li>
-            <li><a href="#" className="hover:text-yellow-400 transition-colors">Services</a></li>
-            <li><a href="#" className="hover:text-yellow-400 transition-colors">About</a></li>
+            <li><a href="#services" className="hover:text-yellow-400 transition-colors">Services</a></li>
+            <li><a href="#stack" className="hover:text-yellow-400 transition-colors">Tech Stack</a></li>
+            <li><a href="#process" className="hover:text-yellow-400 transition-colors">Process</a></li>
+            <li><a href="#work" className="hover:text-yellow-400 transition-colors">Portfolio</a></li>
+            <li><a href="#faq" className="hover:text-yellow-400 transition-colors">FAQ</a></li>
           </ul>
         </div>
         <div>

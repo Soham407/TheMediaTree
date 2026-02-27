@@ -55,10 +55,11 @@ export default function Hero() {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
+        // 1-second delay so users can read the mask text before it zooms
         tl.fromTo(
             textMask.current,
             { scale: 1, transformOrigin: "50% 50%" },
-            { scale: 80, transformOrigin: "50% 50%", duration: 1.8, force3D: true, delay: 1 } // Changed delay to 1 second
+            { scale: 80, transformOrigin: "50% 50%", duration: 1.8, force3D: true, delay: 1 }
           )
           .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 0.4, ease: "power1.in" }, 1.8)
           .to(".energy-beam-container", { autoAlpha: 1, duration: 0.6 }, 1.9)
@@ -98,15 +99,18 @@ export default function Hero() {
       className="w-full h-screen min-h-svh relative overflow-hidden bg-white text-black z-10"
     >
       {/* Accessibility Fix: Screen Reader Context */}
-      <h1 className="sr-only">The Media Tree</h1>
-      <h2 className="sr-only">We Make Engaging Websites</h2>
+      <div className="sr-only">
+        <h1>The Media Tree</h1>
+        <h2>We Make Engaging Websites</h2>
+        <p>Premium Digital Craft. Strategically designed to Command Attention.</p>
+      </div>
 
       {/* Accessibility & UX Fix: Clickable Scroll Indicator */}
       <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
         <div className="scroll-indicator-container opacity-0 absolute bottom-10 flex flex-col items-center pointer-events-auto">
           <button 
-            onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
-            className="group flex flex-col items-center cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex flex-col items-center cursor-pointer hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg p-2 transition-transform"
             aria-label="Scroll down to next section"
           >
             <span className="text-sm uppercase tracking-widest mb-2 font-medium opacity-70 group-hover:opacity-100 transition-opacity text-white drop-shadow-md">
@@ -150,7 +154,7 @@ export default function Hero() {
         <div className="hero-content z-10 text-center pointer-events-none opacity-0 relative">
           <div className="flex flex-col items-center">
             {/* Minimalist 'Quality' Tagline */}
-            <div className="mb-12 overflow-hidden">
+            <div className="mb-12 overflow-hidden" aria-hidden="true">
                <span className="hero-word block text-xs md:text-sm tracking-[0.4em] uppercase text-yellow-500 font-bold">
                  Premium Digital Craft
                </span>
@@ -178,7 +182,7 @@ export default function Hero() {
 
             <div className="mt-16 h-px w-24 bg-linear-to-r from-transparent via-zinc-500 to-transparent hero-word"></div>
 
-            <p className="mt-8 text-sm md:text-base text-zinc-500 max-w-lg mx-auto hero-word tracking-widest uppercase font-light leading-relaxed" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            <p aria-hidden="true" className="mt-8 text-sm md:text-base text-zinc-500 max-w-lg mx-auto hero-word tracking-widest uppercase font-light leading-relaxed" style={{ fontFamily: "'Outfit', sans-serif" }}>
               Strategically designed to <span className="text-white font-medium italic">Command Attention</span>
             </p>
           </div>

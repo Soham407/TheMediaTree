@@ -11,6 +11,7 @@ import Marquee from './components/Marquee';
 import Process from './components/Process';
 import Portfolio from './components/Portfolio';
 import FAQ from './components/FAQ';
+import CTA from './components/CTA';
 import TechStack from './components/TechStack';
 import Footer from './components/Footer';
 
@@ -26,6 +27,7 @@ export default function App() {
         <Process />
         <Portfolio />
         <FAQ />
+        <CTA />
       </main>
       <Footer />
     </div>

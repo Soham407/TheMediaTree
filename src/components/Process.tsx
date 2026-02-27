@@ -45,7 +45,7 @@ export default function Process() {
   ];
 
   return (
-    <section ref={container} className="bg-black text-white relative">
+    <section id="process" ref={container} className="bg-black text-white relative">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row relative">
         {/* Left Sticky Column */}
         <div ref={leftCol} className="w-full md:w-1/2 h-screen flex items-center p-8">

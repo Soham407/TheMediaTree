@@ -92,6 +92,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   }: VelocityTextProps) {
     const baseX = useMotionValue(0);
     const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
+    const [isHovered, setIsHovered] = useState(false);
     const { scrollY } = useScroll(scrollOptions);
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
@@ -121,6 +122,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
 
     const directionFactor = useRef<number>(1);
     useAnimationFrame((t, delta) => {
+      if (isHovered) return; // Pause on hover/focus
       let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
       if (velocityFactor.get() < 0) {
@@ -143,7 +145,14 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     }
 
     return (
-      <div className={`${parallaxClassName} relative overflow-hidden`} style={parallaxStyle}>
+      <div 
+        className={`${parallaxClassName} relative overflow-hidden`} 
+        style={parallaxStyle}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
+      >
         <motion.div
           className={`${scrollerClassName} flex whitespace-nowrap text-center font-sans tracking-[-0.02em] drop-shadow md:leading-20`}
           style={{ x, ...scrollerStyle }}

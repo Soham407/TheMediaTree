@@ -5,6 +5,23 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Trap focus and lock scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsMenuOpen(false);
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleEscape);
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isMenuOpen]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,10 +42,11 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: '#work', label: 'Work', id: 'work' },
     { href: '#services', label: 'Services', id: 'services' },
-    { href: '#stack', label: 'Stack', id: 'stack' },
-    { href: '#about', label: 'About', id: 'about' },
+    { href: '#stack', label: 'Tech Stack', id: 'stack' },
+    { href: '#process', label: 'Process', id: 'process' },
+    { href: '#work', label: 'Work', id: 'work' },
+    { href: '#faq', label: 'FAQ', id: 'faq' },
   ];
 
   return (
@@ -45,22 +63,27 @@ export default function Header() {
             <a 
               key={link.href}
               href={link.href} 
-              className={`hover:text-yellow-400 transition-colors ${activeSection === link.id ? 'text-yellow-400' : ''}`}
+              className={`relative hover:text-yellow-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded px-1 ${activeSection === link.id ? 'text-yellow-400 font-medium' : ''}`}
             >
               {link.label}
+              {activeSection === link.id && (
+                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-yellow-400 rounded-full" aria-hidden="true" />
+              )}
             </a>
           ))}
         </nav>
 
         <div className="flex items-center gap-4">
-          <a href="#contact" className="hidden sm:block bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
+          <a href="#connect" className="hidden sm:block bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
             Let's Connect
           </a>
           
           {/* Mobile Menu Toggle */}
           <button 
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -69,10 +92,17 @@ export default function Header() {
       </header>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-black z-60 flex flex-col items-center justify-center gap-8 transition-transform duration-500 md:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div 
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation"
+        className={`fixed inset-0 bg-black z-60 flex flex-col items-center justify-center gap-8 transition-all duration-500 md:hidden ${isMenuOpen ? 'translate-x-0 opacity-100 visible' : 'translate-x-full opacity-0 invisible'}`}
+      >
         <button 
-          className="absolute top-6 right-6 text-white"
+          className="absolute top-6 right-6 text-white p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded"
           onClick={() => setIsMenuOpen(false)}
+          aria-label="Close menu"
         >
           <X size={32} />
         </button>
@@ -80,14 +110,17 @@ export default function Header() {
           <a 
             key={link.href}
             href={link.href} 
-            className={`text-3xl font-bold hover:text-yellow-400 transition-colors ${activeSection === link.id ? 'text-yellow-400' : ''}`}
+            className={`relative text-3xl font-bold hover:text-yellow-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded p-2 ${activeSection === link.id ? 'text-yellow-400' : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
             {link.label}
+            {activeSection === link.id && (
+               <span className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-yellow-400 rounded-full" aria-hidden="true" />
+            )}
           </a>
         ))}
         <a 
-          href="#contact" 
+          href="#connect" 
           className="mt-4 bg-yellow-400 text-black px-8 py-4 rounded-full font-bold text-xl"
           onClick={() => setIsMenuOpen(false)}
         >

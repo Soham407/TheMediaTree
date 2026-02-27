@@ -20,7 +20,7 @@ export default function Marquee() {
     });
   }, { scope: container });
 
-  const items = ['Strategy', 'Design', 'CMS', 'Speed', '100% Custom Craft', '300+ Brands'];
+  const items = ['Strategy', 'Design', 'CMS', 'Speed', '100% Custom Craft'];
 
   return (
     <div ref={container} className="py-8 bg-yellow-400 text-black overflow-hidden flex whitespace-nowrap">
