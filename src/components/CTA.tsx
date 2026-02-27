@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,6 +7,32 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function CTA() {
   const container = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setResult("Sending....");
+    const formData = new FormData(event.currentTarget);
+    formData.append("access_key", "ab9dd41a-015f-49d4-8f25-2d8dc7cc3265");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setResult("Form Submitted Successfully");
+      event.currentTarget.reset();
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setResult("");
+      }, 3000);
+    } else {
+      setResult("Error! Please try again.");
+    }
+  };
 
   useGSAP(() => {
     if (!container.current) return;
@@ -35,7 +61,8 @@ export default function CTA() {
   }, { scope: container });
 
   return (
-    <section id="connect" ref={container} className="relative py-24 md:py-32 bg-black overflow-hidden flex justify-center items-center px-4 md:px-8">
+    <>
+      <section id="connect" ref={container} className="relative py-24 md:py-32 bg-black overflow-hidden flex justify-center items-center px-4 md:px-8">
       {/* Grid Pattern Background */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none opacity-30"
@@ -87,35 +114,88 @@ export default function CTA() {
 
             <div className="relative z-10 flex flex-col items-center">
               <p className="text-sm uppercase tracking-[0.3em] text-black/50 font-bold mb-6">Get Started</p>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-sans font-bold mb-4 tracking-tight leading-[1.1]">
-                Time to go Next.js?<br />Let's Make It Happen.
+              <h2 className="font-sans font-bold mb-4 tracking-tight max-w-5xl text-center flex flex-col gap-3">
+                <span className="text-3xl md:text-5xl lg:text-6xl leading-[1.1]">Time to go Next.js?</span>
+                <span className="text-2xl md:text-4xl lg:text-5xl leading-[1.2] font-medium text-black/90">"Planning for a website or a web application"</span>
+                <span className="text-xl md:text-3xl lg:text-4xl leading-[1.2]">Let's Make It Happen.</span>
               </h2>
-              <p className="text-base md:text-lg mb-10 max-w-xl text-black/70 font-medium">
-                Drop your site URL — our modern React & Next.js experts will take it from there.
+              <p className="text-base md:text-lg mb-10 max-w-xl text-black/70 font-medium text-center">
+                Fill up the contact form - our team will take it from there.
               </p>
 
-              <form className="w-full max-w-lg mx-auto flex flex-col items-center gap-6" onSubmit={(e) => e.preventDefault()}>
-                <div className="w-full relative">
-                  <input 
-                    type="url" 
-                    placeholder="Please enter your website" 
-                    className="w-full bg-white/90 backdrop-blur-sm border-2 border-black/10 rounded-xl px-6 py-4 text-center text-lg outline-none placeholder:text-black/40 focus:border-black/30 transition-all font-medium text-black focus:ring-0 shadow-sm"
-                    required
-                    aria-label="Website URL"
-                  />
-                </div>
+              <div className="w-full max-w-lg mx-auto flex flex-col items-center gap-6">
                 <button 
-                  type="submit"
+                  onClick={() => setIsModalOpen(true)}
                   className="bg-black hover:bg-zinc-900 text-white px-14 py-4 rounded-xl font-bold text-base md:text-lg tracking-wider transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-black/30 shadow-lg hover:shadow-2xl transform hover:-translate-y-[2px]"
                 >
-                  Next →
+                  Contact Us →
                 </button>
-              </form>
+              </div>
             </div>
           </div>
 
         </div>
       </div>
     </section>
+
+      {/* Contact Form Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-md bg-yellow-400 border-4 border-black p-8 rounded-2xl shadow-[8px_8px_0_0_#000]">
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-black text-white font-bold rounded-full hover:bg-zinc-800 transition-colors"
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+            <h3 className="text-3xl font-black mb-6 text-black tracking-tight text-center">Let's Connect</h3>
+            <form onSubmit={onSubmit} className="flex flex-col gap-4 text-left">
+              <div>
+                <label className="block text-black font-bold mb-2">Name</label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  required 
+                  className="w-full bg-white border-2 border-black rounded-lg px-4 py-3 font-medium text-black focus:outline-none focus:ring-4 focus:ring-black/20"
+                  placeholder="Soham Bhutkar"
+                />
+              </div>
+              <div>
+                <label className="block text-black font-bold mb-2">Email</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  required 
+                  className="w-full bg-white border-2 border-black rounded-lg px-4 py-3 font-medium text-black focus:outline-none focus:ring-4 focus:ring-black/20"
+                  placeholder="aarav@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-black font-bold mb-2">Message</label>
+                <textarea 
+                  name="message" 
+                  required 
+                  rows={4}
+                  className="w-full bg-white border-2 border-black rounded-lg px-4 py-3 font-medium text-black focus:outline-none focus:ring-4 focus:ring-black/20 resize-none"
+                  placeholder="How can we help?"
+                ></textarea>
+              </div>
+              <button 
+                type="submit" 
+                className="mt-2 bg-black text-white font-bold py-4 rounded-lg hover:bg-zinc-800 transition-colors shadow-[4px_4px_0_0_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+              >
+                Submit Form
+              </button>
+              {result && (
+                <p className={`text-center font-bold mt-2 ${result.includes("Error") ? "text-red-700" : "text-black"}`}>
+                  {result}
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
