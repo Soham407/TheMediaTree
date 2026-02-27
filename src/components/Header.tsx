@@ -4,6 +4,15 @@ import { Menu, X } from 'lucide-react';
 export default function Header() {
   const [activeSection, setActiveSection] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Trap focus and lock scroll when menu is open
   useEffect(() => {
@@ -22,24 +31,35 @@ export default function Header() {
     }
   }, [isMenuOpen]);
 
+  // GSAP-aware Scroll Listener for Active Section
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
+    // When using GSAP ScrollTrigger pinning, IntersectionObserver can fail
+    // because elements don't strictly "intersect" the viewport in a standard way.
+    // Instead, we calculate active section based on scroll position.
+    const handleScrollTracking = () => {
+      const sections = document.querySelectorAll('section[id]');
+      let currentSection = '';
 
-    document.querySelectorAll('section[id]').forEach((section) => {
-      observer.observe(section);
-    });
+      sections.forEach((section) => {
+        const sectionTop = section.getBoundingClientRect().top;
+        // If the top of the section is anywhere from slightly above the viewport
+        // down to exactly 30% of the viewport height, mark it as active.
+        if (sectionTop <= window.innerHeight * 0.3) {
+          currentSection = section.id;
+        }
+      });
 
-    return () => observer.disconnect();
-  }, []);
+      if (currentSection && currentSection !== activeSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollTracking);
+    // Call once to set initial state
+    handleScrollTracking();
+
+    return () => window.removeEventListener('scroll', handleScrollTracking);
+  }, [activeSection]);
 
   const navLinks = [
     { href: '#services', label: 'Services', id: 'services' },
@@ -53,7 +73,9 @@ export default function Header() {
     <>
       <header 
         id="main-header" 
-        className="fixed top-0 left-0 w-full bg-black/90 backdrop-blur-sm text-white z-50 p-4 flex justify-between items-center transition-colors duration-300"
+        className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center transition-all duration-300 text-white ${
+          isScrolled ? 'bg-black/90 backdrop-blur-sm p-4 shadow-lg' : 'bg-transparent p-6'
+        }`}
       >
         <div className="text-xl font-bold">The Media Tree</div>
         
