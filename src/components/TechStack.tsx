@@ -50,12 +50,12 @@ const techLine1 = [
 
 const techLine2 = [
   { name: 'Supabase', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiSupabase color="#3ECF8E" size="100%" /></div> },
-  { name: 'PostGress SQL', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiPostgresql color="#4169E1" size="100%" /></div> },
+  { name: 'PostgreSQL', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiPostgresql color="#4169E1" size="100%" /></div> },
   { name: 'MongoDB', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiMongodb color="#47A248" size="100%" /></div> },
   { name: 'Firebase', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiFirebase color="#FFCA28" size="100%" /></div> },
   { name: 'Python', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiPython color="#3776AB" size="100%" /></div> },
   { 
-    name: 'C,C++', 
+    name: 'C / C++', 
     icon: (
       <div className="flex gap-2">
         <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiC color="#A8B9CC" size="100%" /></div>
@@ -65,13 +65,13 @@ const techLine2 = [
   },
   { name: 'GitHub', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiGithub color="white" size="100%" /></div> },
   { name: 'Figma', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiFigma color="#F24E1E" size="100%" /></div> },
-  { name: 'Wordpress', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiWordpress color="#21759B" size="100%" /></div> },
-  { name: 'woocommerce', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiWoocommerce color="#96588A" size="100%" /></div> },
+  { name: 'WordPress', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiWordpress color="#21759B" size="100%" /></div> },
+  { name: 'WooCommerce', icon: <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-center"><SiWoocommerce color="#96588A" size="100%" /></div> },
 ];
 
 interface TechRowProps {
   items: { name: string; icon: React.ReactNode }[];
-  key?: React.Key; // This key is for React's internal use when rendering lists of TechRow components
+  key?: React.Key;
 }
 
 const TechRow = ({ items }: TechRowProps) => (
@@ -87,12 +87,19 @@ const TechRow = ({ items }: TechRowProps) => (
 
 export default function TechStack() {
   return (
-    <section id="stack" className="py-24 bg-black text-white overflow-hidden flex flex-col justify-center">
-      <div className="max-w-6xl mx-auto px-4 mb-4 md:mb-16 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-6">Technologies We Use</h2>
+    <section id="stack" className="py-24 bg-black text-white overflow-hidden flex flex-col justify-center relative">
+      {/* Subtle radial glow */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-yellow-400/5 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 mb-4 md:mb-16 text-center relative z-10">
+        <p className="text-sm uppercase tracking-[0.3em] text-yellow-400/70 font-medium mb-4">Our Arsenal</p>
+        <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Technologies We <span className="text-yellow-400">Use</span></h2>
+        <p className="text-zinc-500 text-lg max-w-xl mx-auto">The modern stack that powers every project we build.</p>
       </div>
       
-      <div className="flex flex-col gap-12 md:gap-16">
+      <div className="flex flex-col gap-12 md:gap-16 relative z-10">
         <ScrollVelocity
           texts={[ <TechRow key="1" items={techLine1} />, <TechRow key="2" items={techLine2} /> ]} 
           velocity={50}
