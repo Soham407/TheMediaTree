@@ -75,24 +75,30 @@ export default function Hero({ headerRef }: HeroProps) {
     () => {
       if (!container.current || !textMask.current) return;
 
-      // Reset initial states ALWAYS so things stay hidden while loading
+      // ── GPU hints for composited layers ──
+      const gpuLayers = container.current.querySelectorAll(
+        '.energy-beam-container, .hero-bg-crossfade, .hero-masked, .hero-content'
+      );
+      gpuLayers.forEach(el => (el as HTMLElement).style.willChange = 'transform, opacity');
+
+      // ── Reset initial states ALWAYS so things stay hidden while loading ──
       gsap.set(".energy-beam-container", { autoAlpha: 0 });
       gsap.set(".hero-bg-crossfade", { autoAlpha: 0 });
       gsap.set(".scroll-indicator-container", { autoAlpha: 0 });
-      gsap.set(".hero-content", { autoAlpha: 0 }); // Initially hide text content too
-      gsap.set(".hero-word", { opacity: 0, y: 30 });
+      gsap.set(".hero-content", { autoAlpha: 0 });
+      gsap.set(".hero-word", { opacity: 0, y: 40 });
       gsap.set(textMask.current, { scale: 1, transformOrigin: "50% 50%" });
 
       const mm = gsap.matchMedia();
 
       if (!isReady) {
-        // Simple pulsing animation while loading
+        // Gentle pulsing animation while loading
         mm.add("(prefers-reduced-motion: no-preference)", () => {
             gsap.to(textMask.current, {
-                opacity: 0.6,
+                opacity: 0.5,
                 yoyo: true,
                 repeat: -1,
-                duration: 1,
+                duration: 1.2,
                 ease: "sine.inOut"
             });
         });
@@ -102,43 +108,79 @@ export default function Hero({ headerRef }: HeroProps) {
         gsap.set(textMask.current, { opacity: 1 });
       }
 
-      // 1. Reduced Motion Preference: Gentle fade-ins, no extreme scaling or infinite pulses
+      // ── 1. Reduced Motion ──
       mm.add("(prefers-reduced-motion: reduce)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
         tl.set(textMask.current, { autoAlpha: 0 })
-          .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 1 })
-          .to(".energy-beam-container", { autoAlpha: 1, duration: 1 }, "<")
+          .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 1.2 })
+          .to(".energy-beam-container", { autoAlpha: 1, duration: 1.2 }, "<")
           .to(".hero-masked", { clipPath: "none", duration: 0.01 }, "+=0.1")
           .fromTo(".hero-content", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 }, "<")
-          .to(".hero-word", { opacity: 1, y: 0, duration: 1, stagger: 0.1 }, "<")
-          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, "+=0.2");
+          .to(".hero-word", { opacity: 1, y: 0, duration: 1, stagger: 0.12 }, "<")
+          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.6 }, "+=0.3");
       });
 
-      // 2. Default Motion: Time-based scale on load (no scroll-cutscene friction)
+      // ── 2. Full Motion: Cinematic reveal ──
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        const tl = gsap.timeline();
 
-        // 0.2-second delay so users can read the mask text before it zooms
+        // Phase 1 — The Zoom (0.4s → 2.8s)
         tl.fromTo(
             textMask.current,
             { scale: 1, transformOrigin: "50% 50%" },
-            { scale: 80, transformOrigin: "50% 50%", duration: 1.8, force3D: true, delay: 0.2 }
+            {
+              scale: 80,
+              transformOrigin: "50% 50%",
+              duration: 2.4,
+              force3D: true,
+              delay: 0.4,
+              ease: "power3.inOut",                   
+            }
           )
-          .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 0.4, ease: "power1.in" }, 1.0)
-          .to(".energy-beam-container", { autoAlpha: 1, duration: 0.6 }, 1.1)
-          .to(".hero-content", { autoAlpha: 1, duration: 0.1 }, 1.4) // make container visible
-          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, 2.0)
-          .to(".hero-word", { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power2.out" }, 1.5)
-          .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.5 }, 2.2);
 
-        // Pulse animation for decorative circles
+          // Phase 2 — Background crossfade (starts midway through the zoom when text is large)
+          .to(".hero-bg-crossfade", {
+            autoAlpha: 1,
+            duration: 0.6,
+            ease: "power2.in",
+          }, 1.8) // <--- Crucial fix: Waits until 1.8s to fade to black
+
+          // Energy beam fades in alongside the crossfade
+          .to(".energy-beam-container", {
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: "power2.inOut",
+          }, 1.8)
+
+          // Phase 3 — Content reveal container
+          .to(".hero-content", { autoAlpha: 1, duration: 0.1, ease: "none" }, 2.2)
+
+          // Remove the clip-path mask at the end of the zoom
+          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, 2.8)
+
+          // Phase 4 — Word cascade (staggered float-up)
+          .to(".hero-word", {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            stagger: 0.12,
+            ease: "power3.out",                     
+          }, 2.2)
+
+          // Phase 5 — Scroll indicator 
+          .to(".scroll-indicator-container", {
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: "power1.out",
+          }, 3.0);
+
+        // Decorative pulse circles (infinite, runs independently)
         gsap.to(".pulse-circle-1", {
           scale: 1.5,
           opacity: 0,
           duration: 3,
           repeat: -1,
-          ease: "power1.out"
+          ease: "power1.out",
         });
 
         gsap.to(".pulse-circle-2", {
@@ -147,11 +189,20 @@ export default function Hero({ headerRef }: HeroProps) {
           duration: 3,
           repeat: -1,
           delay: 1.5,
-          ease: "power1.out"
+          ease: "power1.out",
         });
       });
 
-      return () => mm.revert();
+      // Clean up GPU hints after animations settle
+      const cleanup = () => {
+        gpuLayers.forEach(el => (el as HTMLElement).style.willChange = 'auto');
+      };
+      const cleanupTimer = setTimeout(cleanup, 5000);
+
+      return () => {
+        clearTimeout(cleanupTimer);
+        mm.revert();
+      };
     },
     { scope: container, dependencies: [isReady] }
   );

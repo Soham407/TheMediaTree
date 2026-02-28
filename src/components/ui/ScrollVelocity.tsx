@@ -91,20 +91,6 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     scrollerStyle
   }: VelocityTextProps) {
     const baseX = useMotionValue(0);
-    const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
-    const [isHovered, setIsHovered] = useState(false);
-    const { scrollY } = useScroll(scrollOptions);
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, {
-      damping: damping ?? 50,
-      stiffness: stiffness ?? 400
-    });
-    const velocityFactor = useTransform(
-      smoothVelocity,
-      velocityMapping?.input || [0, 1000],
-      velocityMapping?.output || [0, 5],
-      { clamp: false }
-    );
 
     const copyRef = useRef<HTMLSpanElement>(null);
     const copyWidth = useElementWidth(copyRef);
@@ -120,18 +106,9 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       return `${wrap(-copyWidth, 0, v)}px`;
     });
 
-    const directionFactor = useRef<number>(1);
     useAnimationFrame((t, delta) => {
-      if (isHovered) return; // Pause on hover/focus
-      let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-
-      if (velocityFactor.get() < 0) {
-        directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
-        directionFactor.current = 1;
-      }
-
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
+      // pure constant velocity, ignoring scroll entirely
+      let moveBy = baseVelocity * (delta / 1000);
       baseX.set(baseX.get() + moveBy);
     });
 
@@ -148,10 +125,6 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       <div 
         className={`${parallaxClassName} relative overflow-hidden`} 
         style={parallaxStyle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onFocus={() => setIsHovered(true)}
-        onBlur={() => setIsHovered(false)}
       >
         <motion.div
           className={`${scrollerClassName} flex whitespace-nowrap text-center font-sans tracking-[-0.02em] drop-shadow md:leading-20`}

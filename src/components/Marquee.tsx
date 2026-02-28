@@ -19,20 +19,8 @@ export default function Marquee() {
       repeat: -1,
     });
 
-    const handleMouseEnter = () => tween.pause();
-    const handleMouseLeave = () => tween.play();
-
-    const node = container.current;
-    node.addEventListener('mouseenter', handleMouseEnter);
-    node.addEventListener('mouseleave', handleMouseLeave);
-    node.addEventListener('focusin', handleMouseEnter);
-    node.addEventListener('focusout', handleMouseLeave);
-
     return () => {
-      node.removeEventListener('mouseenter', handleMouseEnter);
-      node.removeEventListener('mouseleave', handleMouseLeave);
-      node.removeEventListener('focusin', handleMouseEnter);
-      node.removeEventListener('focusout', handleMouseLeave);
+      tween.kill();
     };
   }, { scope: container });
 
