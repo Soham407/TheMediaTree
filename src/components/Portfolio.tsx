@@ -20,9 +20,9 @@ export default function Portfolio() {
   };
 
   const works = [
-    { name: 'Govardhan Ecovillage', desc: 'Wellness & Spiritual Retreat', img: 'https://images.unsplash.com/photo-1545389336-eaeecece96ef?auto=format&fit=crop&q=80&w=600&h=400' },
-    { name: 'Rioga Premium', desc: 'Luxury Real Estate', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=600&h=400' },
-    { name: 'Avalon Heights', desc: 'International School', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=600&h=400' },
+    { name: 'Govardhan Ecovillage', desc: 'Wellness & Spiritual Retreat', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600&h=400' },
+    { name: 'Rioga Premium', desc: 'Luxury Real Estate', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600&h=400' },
+    { name: 'Avalon Heights', desc: 'International School', img: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=600&h=400' },
   ];
 
   return (

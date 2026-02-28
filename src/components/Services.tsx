@@ -130,7 +130,7 @@ export default function Services() {
                 {/* Divider */}
                 <div className="w-12 h-px bg-zinc-800 group-hover:w-20 group-hover:bg-yellow-400 transition-all duration-500 mb-5" />
                 
-                <p className="text-zinc-500 text-base leading-relaxed group-hover:text-zinc-400 transition-colors">{service.desc}</p>
+                <p className="text-zinc-300 text-base leading-relaxed group-hover:text-white transition-colors">{service.desc}</p>
               </div>
             </div>
           ))}

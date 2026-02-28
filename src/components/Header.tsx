@@ -98,7 +98,7 @@ const Header = forwardRef<HTMLElement, {}>(function Header(props, ref) {
         </nav>
 
         <div className="flex items-center gap-4">
-          <a href="#connect" className="hidden sm:block bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200 transition-colors">
+          <a href="#connect" className="hidden sm:inline-block bg-white text-black px-6 py-2.5 font-bold hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all shadow-[4px_4px_0_0_rgba(255,255,255,0.3)] hover:shadow-none hover:translate-y-1 hover:translate-x-1">
             Let's Connect
           </a>
           
@@ -145,7 +145,7 @@ const Header = forwardRef<HTMLElement, {}>(function Header(props, ref) {
         ))}
         <a 
           href="#connect" 
-          className="mt-4 bg-yellow-400 text-black px-8 py-4 rounded-full font-bold text-xl"
+          className="mt-4 bg-yellow-400 text-black px-10 py-4 font-bold text-xl border-2 border-black shadow-[6px_6px_0_0_rgba(255,255,255,1)] hover:shadow-none hover:translate-y-1.5 hover:translate-x-1.5 transition-all"
           onClick={() => setIsMenuOpen(false)}
         >
           Let's Connect
