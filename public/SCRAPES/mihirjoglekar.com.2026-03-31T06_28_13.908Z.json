@@ -1,0 +1,107 @@
+{
+  "data": {
+    "markdown": "[Skip to content](https://mihirjoglekar.com/#content)\n\n[![](https://mihirjoglekar.com/wp-content/uploads/2020/12/mihir_joglekar_title-1-1024x78.png)](https://mihirjoglekar.com/)\n\n[Home](https://mihirjoglekar.com/)\n\n[Work](https://mihirjoglekar.com/work/)\n\n[BOOKS](https://mihirjoglekar.com/books/)\n\n[COVERS](https://mihirjoglekar.com/covers/)\n\n[ADVERTISING](https://mihirjoglekar.com/advertising/)\n\n[About](https://mihirjoglekar.com/about/)\n\n[Facebook](https://www.facebook.com/mihir.k.joglekar)[Instagram](https://www.instagram.com/artofmihir/)[Behance](https://www.behance.net/mihirjoglekar)\n\n## .",
+    "metadata": {
+      "language": "en",
+      "robots": "max-image-preview:large",
+      "title": "Mihir Joglekar",
+      "viewport": "width=device-width, initial-scale=1",
+      "generator": [
+        "WordPress 6.9.4",
+        "Elementor 4.0.0; features: additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto"
+      ],
+      "scrapeId": "019d4294-15ee-71d4-b83a-79af38bfb3b4",
+      "sourceURL": "https://mihirjoglekar.com",
+      "url": "https://mihirjoglekar.com/",
+      "statusCode": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "timezone": "America/New_York",
+      "proxyUsed": "basic",
+      "cacheState": "miss",
+      "indexId": "7783aa82-32f0-4a52-a61b-e66ed43ba083",
+      "creditsUsed": 1,
+      "concurrencyLimited": false
+    },
+    "summary": "The page belongs to Mihir Joglekar, highlighting his work, books, and artistic covers. It features sections for viewing his portfolio, available books, and advertising services. Additionally, there are links to his social media profiles, including Facebook, Instagram, and Behance."
+  },
+  "scrape_id": "019d4294-15ee-71d4-b83a-79af38bfb3b4",
+  "id": "AYZZk_STYIod68e1CS3_N",
+  "startedAt": "2026-03-31T06:28:13.908Z",
+  "endedAt": "2026-03-31T06:28:20.110Z",
+  "endpoint": "scrape",
+  "formState": {
+    "extractSetupCompleted": false,
+    "urls": [],
+    "extractSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "company_mission": {
+          "type": "string"
+        },
+        "supports_sso": {
+          "type": "boolean"
+        },
+        "is_open_source": {
+          "type": "boolean"
+        },
+        "is_in_yc": {
+          "type": "boolean"
+        }
+      }
+    },
+    "extractPrompt": "Extract the company details, following the schema.",
+    "enableWebSearch": false,
+    "constrainUrls": false,
+    "options": {
+      "onlyMainContent": false,
+      "parsePDF": true,
+      "stealthMode": false,
+      "excludeTags": [],
+      "includeTags": [],
+      "waitFor": "",
+      "timeout": "",
+      "maxAge": "2 days",
+      "ignoreSitemap": false,
+      "crawlEntireDomain": false,
+      "sitemap": "include",
+      "limit": "10",
+      "maxDepth": "",
+      "excludePaths": [],
+      "includePaths": [],
+      "includeSubdomains": false,
+      "search": "",
+      "scrapeContentFromSearchResults": true,
+      "timeBasedSearch": "",
+      "location": "",
+      "prompt": ""
+    },
+    "formats": [
+      "markdown",
+      "summary"
+    ],
+    "sources": [
+      "web"
+    ],
+    "categories": [],
+    "jsonSchema": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "company_name": {
+          "type": "string"
+        },
+        "company_description": {
+          "type": "string"
+        }
+      }
+    },
+    "jsonPrompt": "",
+    "agent": {},
+    "url": "mihirjoglekar.com",
+    "endpoint": "scrape"
+  },
+  "status": "success",
+  "version": "hAdVR4omAvqYxWdsJL0qU",
+  "isPreview": false
+}
