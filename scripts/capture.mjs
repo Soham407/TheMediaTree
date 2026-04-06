@@ -9,9 +9,7 @@ const __dirname = path.dirname(__filename);
 const urls = [
   'https://pureelements.in',
   'https://ikigaire.ae',
-  'https://pulllogic.com',
   'https://manojraneassociates.com',
-  'https://cybersec1st.com',
   'https://nikhilgroup.in',
   'https://fountainparkdental.com',
   'https://mihirjoglekar.com',

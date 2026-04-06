@@ -22,12 +22,6 @@ export default function Portfolio() {
 
   const works = [
     { 
-      name: 'Pull Logic', 
-      desc: 'AI-Driven Supply Chain Availability Intelligence', 
-      img: '/projects/pulllogic.com.webp',
-      url: 'https://pulllogic.com/'
-    },
-    { 
       name: 'Pure Elements', 
       desc: 'Natural Ayurvedic Skin & Hair Care E-commerce', 
       img: '/projects/pureelements.in.webp',
@@ -38,12 +32,6 @@ export default function Portfolio() {
       desc: 'Premium Dubai Real Estate Investment & Brokerage', 
       img: '/projects/ikigaire.ae.webp',
       url: 'https://ikigaire.ae/'
-    },
-    { 
-      name: 'CyberSec1st', 
-      desc: 'Vendor-Agnostic Cybersecurity Advisory Services', 
-      img: '/projects/cybersec1st.com.webp',
-      url: 'https://cybersec1st.com/'
     },
     { 
       name: 'Manoj Rane Associates', 
