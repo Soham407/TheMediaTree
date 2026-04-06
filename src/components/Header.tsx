@@ -80,7 +80,7 @@ const Header = forwardRef<HTMLElement, {}>(function Header(props, ref) {
         }`}
       >
         <a href="#" className="flex items-center" aria-label="The Media Tree Home">
-          <img src="/logo.svg" alt="The Media Tree Logo" className="h-10 w-auto text-white filter brightness-0 invert" />
+          <img src="/logo.svg" alt="The Media Tree Logo" className="h-16 w-auto text-white filter brightness-0 invert" />
         </a>
         
         {/* Desktop Nav */}
