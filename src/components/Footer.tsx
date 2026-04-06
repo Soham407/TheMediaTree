@@ -18,7 +18,7 @@ export default function Footer() {
         {/* Upper Footer */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 md:gap-8 mb-16">
           {/* Brand Column */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-4">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">The Media Tree</h2>
             <p className="text-zinc-400 text-lg leading-relaxed max-w-md mb-6">
               Creative Solutions Agency building custom, high-performance websites that command attention.
@@ -45,11 +45,11 @@ export default function Footer() {
           </div>
 
           {/* Contact Column */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <h3 className="text-sm font-bold mb-6 uppercase tracking-[0.2em] text-zinc-500">Contact</h3>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:vivek@themediatree.co.in" className="text-zinc-400 hover:text-yellow-400 transition-colors text-base break-all">
+                <a href="mailto:vivek@themediatree.co.in" className="text-zinc-400 hover:text-yellow-400 transition-colors text-base whitespace-nowrap">
                   vivek@themediatree.co.in
                 </a>
               </li>
