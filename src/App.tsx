@@ -3,18 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-
-const Services = lazy(() => import('./components/Services'));
-const Marquee = lazy(() => import('./components/Marquee'));
-const Process = lazy(() => import('./components/Process'));
-const Portfolio = lazy(() => import('./components/Portfolio'));
-const FAQ = lazy(() => import('./components/FAQ'));
-const CTA = lazy(() => import('./components/CTA'));
-const TechStack = lazy(() => import('./components/TechStack'));
-const Footer = lazy(() => import('./components/Footer'));
+import Services from './components/Services';
+import Marquee from './components/Marquee';
+import Process from './components/Process';
+import Portfolio from './components/Portfolio';
+import FAQ from './components/FAQ';
+import CTA from './components/CTA';
+import TechStack from './components/TechStack';
+import Footer from './components/Footer';
 
 export default function App() {
   const headerRef = React.useRef<HTMLElement>(null);
@@ -30,19 +29,15 @@ export default function App() {
       <Header ref={headerRef} />
       <main id="main-content">
         <Hero headerRef={headerRef} />
-        <Suspense fallback={<div className="h-32 bg-black"></div>}>
-          <Services />
-          <Marquee />
-          <TechStack />
-          <Process />
-          <Portfolio />
-          <FAQ />
-          <CTA />
-        </Suspense>
+        <Services />
+        <Marquee />
+        <TechStack />
+        <Process />
+        <Portfolio />
+        <FAQ />
+        <CTA />
       </main>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      <Footer />
     </div>
   );
 }
