@@ -79,7 +79,9 @@ const Header = forwardRef<HTMLElement, {}>(function Header(props, ref) {
           isScrolled ? 'bg-black/90 backdrop-blur-sm p-4 shadow-lg' : 'bg-transparent p-6'
         }`}
       >
-        <div className="text-xl font-bold">The Media Tree</div>
+        <a href="#" className="flex items-center" aria-label="The Media Tree Home">
+          <img src="/logo.svg" alt="The Media Tree Logo" className="h-10 w-auto text-white filter brightness-0 invert" />
+        </a>
         
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6">
