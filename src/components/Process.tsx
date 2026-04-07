@@ -21,6 +21,7 @@ export default function Process() {
         start: 'top top',
         end: 'bottom bottom',
         pin: leftCol.current,
+        anticipatePin: 1,
       });
     });
 

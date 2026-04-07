@@ -46,7 +46,10 @@ export default function Hero({ headerRef }: HeroProps) {
         });
     });
 
-    const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+    const fontsReady = document.fonts ? Promise.race([
+        document.fonts.ready,
+        new Promise(resolve => setTimeout(resolve, 2000)) // Don't let fonts block forever
+    ]) : Promise.resolve();
 
     const windowLoaded = new Promise((resolve) => {
         if (document.readyState === 'complete') {
@@ -79,7 +82,14 @@ export default function Hero({ headerRef }: HeroProps) {
       const gpuLayers = container.current.querySelectorAll(
         '.energy-beam-container, .hero-bg-crossfade, .hero-masked, .hero-content'
       );
-      gpuLayers.forEach(el => (el as HTMLElement).style.willChange = 'transform, opacity');
+      gpuLayers.forEach(el => {
+        const style = (el as HTMLElement).style;
+        style.willChange = 'transform, opacity';
+        // Safari specific fix for clipped elements
+        if (el.classList.contains('hero-masked')) {
+            style.willChange = 'clip-path, -webkit-clip-path, transform, opacity';
+        }
+      });
 
       // ── Reset initial states ALWAYS so things stay hidden while loading ──
       gsap.set(".energy-beam-container", { autoAlpha: 0 });
@@ -114,7 +124,7 @@ export default function Hero({ headerRef }: HeroProps) {
         tl.set(textMask.current, { autoAlpha: 0 })
           .to(".hero-bg-crossfade", { autoAlpha: 1, duration: 1.2 })
           .to(".energy-beam-container", { autoAlpha: 1, duration: 1.2 }, "<")
-          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, "+=0.1")
+          .to(".hero-masked", { clipPath: "none", webkitClipPath: "none", duration: 0.01 }, "+=0.1")
           .fromTo(".hero-content", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 }, "<")
           .to(".hero-word", { opacity: 1, y: 0, duration: 1, stagger: 0.12 }, "<")
           .to(".scroll-indicator-container", { autoAlpha: 1, duration: 0.6 }, "+=0.3");
@@ -132,7 +142,7 @@ export default function Hero({ headerRef }: HeroProps) {
               scale: 80,
               transformOrigin: "50% 50%",
               duration: 2.4,
-              force3D: true,
+              force3D: false, // SVG scale + clip-path + Safari = force3D:false usually safer
               delay: 0.4,
               ease: "power3.inOut",                   
             }
@@ -156,7 +166,7 @@ export default function Hero({ headerRef }: HeroProps) {
           .to(".hero-content", { autoAlpha: 1, duration: 0.1, ease: "none" }, 2.2)
 
           // Remove the clip-path mask at the end of the zoom
-          .to(".hero-masked", { clipPath: "none", duration: 0.01 }, 2.8)
+          .to(".hero-masked", { clipPath: "none", webkitClipPath: "none", duration: 0.01 }, 2.8)
 
           // Phase 4 — Word cascade (staggered float-up)
           .to(".hero-word", {
@@ -256,7 +266,10 @@ export default function Hero({ headerRef }: HeroProps) {
       {/* The hero content, masked by the SVG clip-path */}
       <div
         className="absolute inset-0 z-10 flex flex-col justify-center items-center bg-black text-white overflow-hidden hero-masked"
-        style={{ clipPath: "url(#hero-clip-path)" }}
+        style={{ 
+          clipPath: "url(#hero-clip-path)",
+          WebkitClipPath: "url(#hero-clip-path)"
+        }}
       >
         <div className="absolute inset-0 z-0 energy-beam-container">
           <EnergyBeam />
@@ -307,6 +320,7 @@ export default function Hero({ headerRef }: HeroProps) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        style={{ overflow: 'visible' }}
         aria-hidden="true"
       >
         <defs>

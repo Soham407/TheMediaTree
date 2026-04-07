@@ -66,6 +66,7 @@ export default function FAQ() {
       end: 'bottom bottom',
       pin: leftCol.current,
       pinSpacing: false,
+      anticipatePin: 1,
     });
 
     faqItemsRef.current.forEach((item) => {

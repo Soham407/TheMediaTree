@@ -21,6 +21,7 @@ export default function Services() {
         start: 'top top',
         end: 'bottom bottom',
         pin: rightCol.current,
+        anticipatePin: 1,
       });
     });
 

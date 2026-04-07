@@ -128,7 +128,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       >
         <motion.div
           className={`${scrollerClassName} flex whitespace-nowrap text-center font-sans tracking-[-0.02em] drop-shadow md:leading-20`}
-          style={{ x, ...scrollerStyle }}
+          style={{ x, willChange: 'transform', ...scrollerStyle }}
         >
           {spans}
         </motion.div>
