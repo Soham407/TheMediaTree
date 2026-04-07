@@ -296,7 +296,7 @@ export default function Hero({ headerRef }: HeroProps) {
 
             <div className="mt-16 h-px w-24 bg-linear-to-r from-transparent via-zinc-500 to-transparent hero-word"></div>
 
-            <p aria-hidden="true" className="mt-8 text-sm md:text-base text-zinc-500 max-w-lg mx-auto hero-word tracking-widest uppercase font-light leading-relaxed" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            <p aria-hidden="true" className="mt-8 text-sm md:text-base text-zinc-500 max-w-lg mx-auto hero-word tracking-widest uppercase font-light leading-relaxed">
               Strategically designed to <span className="text-white font-medium italic">Command Attention</span>
             </p>
           </div>
@@ -318,8 +318,8 @@ export default function Hero({ headerRef }: HeroProps) {
               textAnchor="middle"
               dominantBaseline="central"
               fontSize={fontSize}
-              fontWeight="900"
-              fontFamily="'Outfit', sans-serif"
+              fontWeight="800"
+              fontFamily="'M PLUS 2', sans-serif"
               letterSpacing="-0.02em"
             >
               <tspan x="50%" dy="-1.05em">
