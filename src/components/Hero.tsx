@@ -318,8 +318,8 @@ export default function Hero({ headerRef }: HeroProps) {
               textAnchor="middle"
               dominantBaseline="central"
               fontSize={fontSize}
-              fontWeight="800"
-              fontFamily="'M PLUS 2', sans-serif"
+              fontWeight="900"
+              fontFamily="'Outfit', sans-serif"
               letterSpacing="-0.02em"
             >
               <tspan x="50%" dy="-1.05em">
