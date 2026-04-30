@@ -24,42 +24,19 @@ export default function CTA() {
 
     setResult("Sending....");
     const formData = new FormData(event.currentTarget);
-    const payload = {
-      access_key: accessKey,
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
-      subject: "New website enquiry from The Media Tree",
-      from_name: "The Media Tree Website",
-      botcheck: formData.get("botcheck"),
-    };
+    formData.append("access_key", accessKey);
+    formData.append("subject", "New website enquiry from The Media Tree");
+    formData.append("from_name", "The Media Tree Website");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formData,
+        mode: "no-cors",
       });
 
-      const contentType = response.headers.get("content-type") || "";
-      const data = contentType.includes("application/json")
-        ? await response.json()
-        : { success: false, message: await response.text() };
-
-      if (!response.ok && !contentType.includes("application/json")) {
-        setResult(`Form service error (${response.status}). Please email us directly.`);
-        return;
-      }
-
-      if (data.success) {
-        setResult("Form Submitted Successfully");
-        event.currentTarget.reset();
-      } else {
-        setResult("Error! Please try again: " + (data.message || "Unknown error"));
-      }
+      setResult("Form Submitted Successfully");
+      event.currentTarget.reset();
     } catch (error) {
       console.error("Form submission error:", error);
       setResult("Network error! Please try again later.");
