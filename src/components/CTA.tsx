@@ -10,27 +10,36 @@ export default function CTA() {
   const cardRef = useRef<HTMLDivElement>(null);
   const squigglesRef = useRef<(SVGElement | null)[]>([]);
   const [result, setResult] = useState("");
+  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   const isSending = result === "Sending....";
   const isSuccess = result === "Form Submitted Successfully";
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!accessKey) {
+      setResult("Missing form configuration. Add VITE_WEB3FORMS_ACCESS_KEY in Vercel.");
+      return;
+    }
 
     setResult("Sending....");
     const formData = new FormData(event.currentTarget);
     const payload = {
+      access_key: accessKey,
       name: formData.get("name"),
       email: formData.get("email"),
       message: formData.get("message"),
+      subject: "New website enquiry from The Media Tree",
+      from_name: "The Media Tree Website",
       botcheck: formData.get("botcheck"),
     };
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify(payload),
       });
