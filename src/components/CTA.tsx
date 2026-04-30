@@ -10,15 +10,21 @@ export default function CTA() {
   const cardRef = useRef<HTMLDivElement>(null);
   const squigglesRef = useRef<(SVGElement | null)[]>([]);
   const [result, setResult] = useState("");
+  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   const isSending = result === "Sending....";
   const isSuccess = result === "Form Submitted Successfully";
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!accessKey) {
+      setResult("Missing form configuration. Add VITE_WEB3FORMS_ACCESS_KEY to your .env file.");
+      return;
+    }
+
     setResult("Sending....");
     const formData = new FormData(event.currentTarget);
-    formData.append("access_key", (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "ab9dd41a-015f-49d4-8f25-2d8dc7cc3265");
+    formData.append("access_key", accessKey);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
