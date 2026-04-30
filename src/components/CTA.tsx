@@ -10,29 +10,41 @@ export default function CTA() {
   const cardRef = useRef<HTMLDivElement>(null);
   const squigglesRef = useRef<(SVGElement | null)[]>([]);
   const [result, setResult] = useState("");
-  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
   const isSending = result === "Sending....";
   const isSuccess = result === "Form Submitted Successfully";
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!accessKey) {
-      setResult("Missing form configuration. Add VITE_WEB3FORMS_ACCESS_KEY to your .env file.");
-      return;
-    }
 
     setResult("Sending....");
     const formData = new FormData(event.currentTarget);
-    formData.append("access_key", accessKey);
+    const payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+      botcheck: formData.get("botcheck"),
+    };
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      const data = contentType.includes("application/json")
+        ? await response.json()
+        : { success: false, message: await response.text() };
+
+      if (!response.ok && !contentType.includes("application/json")) {
+        setResult(`Form service error (${response.status}). Please email us directly.`);
+        return;
+      }
+
       if (data.success) {
         setResult("Form Submitted Successfully");
         event.currentTarget.reset();
